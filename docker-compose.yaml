@@ -1,0 +1,66 @@
+version: '3.7'
+
+# Use root/example as user/password credentials
+services:
+
+  mysql:
+    image: mysql
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    #env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 12345
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker_volumes/mysql:/var/lib/mysql
+    networks:
+      docker-net:
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      docker-net:
+
+
+  psql:
+    image: postgres:latest
+    container_name: psql
+    volumes:
+      - ./docker_volumes/psql:/var/lib/postgresql/data/pgdata
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      LANG: C.UTF-8
+      TZ: "Europe/Moscow"
+      POSTGRES_PASSWORD: "12345"
+      POSTGRES_USER: user
+    ports:
+      - "5432:5432"
+    networks:
+      docker-net:
+    restart: always
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@dmil.ru
+      PGADMIN_DEFAULT_PASSWORD: 12345
+      LANG: C.UTF-8
+      TZ: "Europe/Moscow"
+    ports:
+      - "8081:80"
+    networks:
+      docker-net:
+    restart: always
+
+networks:
+  docker-net:
+    driver: bridge
