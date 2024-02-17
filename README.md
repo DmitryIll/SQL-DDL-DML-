@@ -2,6 +2,14 @@
 
 ---
 
+Был вопрос - уже нашел ответ - можно так создавать пользователя что бы подключаться с любого IP:
+
+```
+mysql> CREATE USER 'sys_temp'@'%' IDENTIFIED BY '12345';
+```
+
+---
+
 Задание можно выполнить как в любом IDE, так и в командной строке.
 
 ### Задание 1
@@ -77,6 +85,14 @@ CREATE USER 'sys_temp'@'172.18.0.1' IDENTIFIED BY '12345';
 ```
 ![alt text](image-11.png)
 
+
+Потом понял что можно вообще так что бы с любых IP:
+
+```
+mysql> CREATE USER 'sys_temp'@'%' IDENTIFIED BY '12345';
+```
+
+
 1.3. Выполните запрос на получение списка пользователей в базе данных. (скриншот)
 
 ![alt text](image-6.png)
@@ -97,6 +113,9 @@ mysql> GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'localhost';
 
 ```
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'172.18.0.1';
+```
+```
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'sys_temp'@'%';
 ```
 
 
